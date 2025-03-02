@@ -1,0 +1,7 @@
+
+# Игнорировать папку сборки Maven
+target/
+# Игнорировать файлы IDE
+.idea/
+MainPage_Test.java
+logs
