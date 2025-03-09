@@ -11,6 +11,8 @@ import pages.MainPage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import static pages.MainPage.InputField.*;
+
 public class Registration_Form {
     private static final Logger logger = LogManager.getLogger(Registration_Form.class);
     private static WebDriverFactory webDriverFactory = new WebDriverFactory();
@@ -23,8 +25,8 @@ public class Registration_Form {
     }
     @BeforeEach
     public void setUp() {
-    ChromeOptions options = new ChromeOptions();
-    driver =  webDriverFactory.create();
+        ChromeOptions options = new ChromeOptions();
+        driver =  webDriverFactory.create();
     }
 
     @Test
@@ -36,19 +38,21 @@ public class Registration_Form {
         options.addArguments("--start-fullscreen");
 
         try {
-            logger.info("Заполнение имени");
-            mainPage.inputName();
 
+
+            mainPage.inputField(USERNAME);
+            logger.info("Заполнение имени");
+          //mainPage.inputName();
             logger.info("Заполнение почты");
-            mainPage.inputEmail();
+            mainPage.inputField(EMAIL);
             logger.info("Заполнение пароля");
-            mainPage.inputPassword();
+            mainPage.inputField(PASSWORD);
             logger.info("Заполнение подтвержения пароля");
-            mainPage.inputConfirmPassword();
+            mainPage.inputField(CONFIRM_PASSWORD);
             logger.info("Заполнение даты рождения");
-            mainPage.inputBirthDate();
+            mainPage.inputField(BIRTHDATE);
             logger.info("Заполнение формы уровня языка");
-            mainPage.lenguagelevel();
+            mainPage.languagelevel();
             logger.info("Нажатие кнопки регистрации");
             mainPage.registrationBtnClick();
             logger.info("Проверка результатов регистрации");
@@ -63,10 +67,10 @@ public class Registration_Form {
     }
 
 
-    @AfterEach
-        public void tearDown () {
-             if (driver != null) {
-                driver.quit();
-            }
-        }
+//    @AfterEach
+//        public void tearDown () {
+//             if (driver != null) {
+//                driver.quit();
+//            }
+//        }
 }

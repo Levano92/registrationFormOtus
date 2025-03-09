@@ -1,5 +1,5 @@
 package pages;
-import DataForInput.InputData;
+//import dataforInput.InputData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -11,15 +11,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class MainPage extends AbsBasePage {
 
 
+
+
     public MainPage(WebDriver driver)  {
         super(driver, "/form.html");
     }
 
-    private By nameField = By.cssSelector("input[id='username']");
-    private By emailField = By.cssSelector("input[id='email']");
-    private By passwordField = By.cssSelector("input[id='password']");
-    private By passwordConfirmField = By.cssSelector("input[id='confirm_password']");
-    private By birthdateField = By.cssSelector("input[id='birthdate']");
+
+
     private By languageLevelField = By.cssSelector("select[id='language_level']");
 
     private By languageLevelBeginer = By.xpath("//option[text()='Начальный']");
@@ -29,34 +28,51 @@ public class MainPage extends AbsBasePage {
     private By regstrsationBtn = By.cssSelector("input[value='Зарегистрироваться']");
     private By resultofRegistration = By.cssSelector("div[id='output']");
 
-    public void inputText (String data, By locator) {
-        WebElement element  = driver.findElement(locator);
-        element.sendKeys(data);
+    private static String name = "Дмитрий";
+    private static String email = "test@test.com";
+    private static String password = "qwerty123";
+    private static String birthdate = "111119992";
+
+    private static String lvlLanguage = "Носитель языка";
+
+
+    public enum InputField {
+        USERNAME("input[id='username']",name),
+        EMAIL("input[id='email']", email),
+        PASSWORD("input[id='password']", password),
+        CONFIRM_PASSWORD("input[id='confirm_password']", password),
+        BIRTHDATE("input[id='birthdate']",birthdate);
+
+
+
+        private final String locator;
+        private final String data;
+
+        InputField(String locator, String data) {
+            this.locator = locator;
+            this.data = data;
+        }
+
+        public By getLocator() {
+            return By.cssSelector(locator);
+        }
+
+        public String getData() {
+            return data;
+        }
+    }
+    public void inputField(InputField field) {
+        WebElement element = driver.findElement(field.getLocator());
+        element.clear();
+        element.sendKeys(field.getData());
     }
 
-    public void inputName (){
-        inputText(InputData.getName(), nameField);
-    }
-    public void inputEmail (){
-        inputText(InputData.getEmail(), emailField);
-    }
 
-    public void inputPassword (){
-        inputText(InputData.getPassword(), passwordField);
-    }
 
-    public void inputConfirmPassword () {
-        inputText(InputData.getPassword(), passwordConfirmField);
-    }
-
-    public void inputBirthDate () {
-        inputText(InputData.getBirthdate(), birthdateField);
-    }
-
-    public void lenguagelevel () {
+    public void languagelevel () {
         WebElement lvlList  = driver.findElement(languageLevelField);
         lvlList.click();
-        WebElement lvl  = choosedvl(InputData.getLvlLanguage());
+        WebElement lvl  = chooselvl(lvlLanguage);
         lvl.click();
     }
 
@@ -74,7 +90,7 @@ public class MainPage extends AbsBasePage {
         return remapDate;
     }
 
-    public  WebElement choosedvl (String lvlLanguage) {
+    public  WebElement chooselvl (String lvlLanguage) {
         WebElement lvlleng = null;
         switch (lvlLanguage) {
 
@@ -145,10 +161,10 @@ public class MainPage extends AbsBasePage {
         String outputEmailText = lines[1].trim();
         String outputBirthdayText = lines[2].trim();
         String outputLVLText = lines[3].trim();
-        assertEquals("Имя пользователя: " + InputData.getName(), outputNameText, "Неверный текст имени");
-        assertEquals( "Электронная почта: " + InputData.getEmail(), outputEmailText, "Неверный текст почты");
-        assertEquals("Дата рождения: " + remapingBirthday(InputData.getBirthdate()), outputBirthdayText, "Неверный текст даты рождения");
-        assertEquals("Уровень языка: " + assertlvlleng(InputData.getLvlLanguage()), outputLVLText, "Неверный текст уровня языка");
+        assertEquals("Имя пользователя: " + name, outputNameText, "Неверный текст имени");
+        assertEquals( "Электронная почта: " + email, outputEmailText, "Неверный текст почты");
+        assertEquals("Дата рождения: " + remapingBirthday(birthdate), outputBirthdayText, "Неверный текст даты рождения");
+        assertEquals("Уровень языка: " + assertlvlleng(lvlLanguage), outputLVLText, "Неверный текст уровня языка");
 
 
     }
