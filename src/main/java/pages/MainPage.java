@@ -3,6 +3,8 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import enums.InputField;
+
 
 
 
@@ -15,57 +17,31 @@ public class MainPage extends AbsBasePage {
 
     public MainPage(WebDriver driver)  {
         super(driver, "/form.html");
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.birthdate = birthdate;
     }
 
 
 
     private By languageLevelField = By.cssSelector("select[id='language_level']");
 
-    private By languageLevelBeginer = By.xpath("//option[text()='Начальный']");
-    private By languageLevelIntermediate = By.xpath("//option[text()='Средний']");
-    private By languageLevelAdvanced = By.xpath("//option[text()='Продвинутый']");
-    private By languageLevelNative = By.xpath("//option[text()='Носитель языка']");
     private By regstrsationBtn = By.cssSelector("input[value='Зарегистрироваться']");
     private By resultofRegistration = By.cssSelector("div[id='output']");
 
-    private static String name = "Дмитрий";
-    private static String email = "test@test.com";
-    private static String password = "qwerty123";
-    private static String birthdate = "111119992";
+    private String name = System.getProperty("name");
+    private String email = System.getProperty("email");
+    private String password = System.getProperty("password");
+    private String birthdate = System.getProperty("birthdate");
 
-    private static String lvlLanguage = "Носитель языка";
+    private  String lvlLanguage = "Носитель языка";
 
-
-    public enum InputField {
-        USERNAME("input[id='username']",name),
-        EMAIL("input[id='email']", email),
-        PASSWORD("input[id='password']", password),
-        CONFIRM_PASSWORD("input[id='confirm_password']", password),
-        BIRTHDATE("input[id='birthdate']",birthdate);
-
-
-
-        private final String locator;
-        private final String data;
-
-        InputField(String locator, String data) {
-            this.locator = locator;
-            this.data = data;
-        }
-
-        public By getLocator() {
-            return By.cssSelector(locator);
-        }
-
-        public String getData() {
-            return data;
-        }
-    }
-    public void inputField(InputField field) {
-        WebElement element = driver.findElement(field.getLocator());
-        element.clear();
-        element.sendKeys(field.getData());
-    }
+public void inputField(InputField field, String data) {
+    WebElement element = driver.findElement(field.getLocator());
+    element.clear();
+    element.sendKeys(data);
+}
 
 
 
@@ -90,36 +66,10 @@ public class MainPage extends AbsBasePage {
         return remapDate;
     }
 
-    public  WebElement chooselvl (String lvlLanguage) {
-        WebElement lvlleng = null;
-        switch (lvlLanguage) {
+    private WebElement chooselvl (String lvlLanguage) {
 
-            case "Начальный":
-                System.out.println("Выбран начальный уровень.");
-                lvlleng = driver.findElement(languageLevelBeginer);
-                break;
-            case "Средний":
-                System.out.println("Выбран средний уровень.");
-                 lvlleng = driver.findElement(languageLevelIntermediate);
-                break;
-            case "Продвинутый":
-                System.out.println("Выбран продвинутый уровень.");
-                lvlleng = driver.findElement(languageLevelAdvanced);
-
-                break;
-            case "Носитель языка":
-                System.out.println("Выбран уровень носителя языка.");
-                lvlleng = driver.findElement(languageLevelNative);
-                break;
-            default:
-                System.out.println("Уровень не распознан.");
-                break;
-
-        }
-        return lvlleng;
+        return driver.findElement(By.xpath(String.format("//option[text()='%s']", lvlLanguage)));
     }
-
-
     public  String assertlvlleng (String lvlLenguage) {
         String lvlLenguageinEng = null;
         switch (lvlLenguage) {

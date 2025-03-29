@@ -3,5 +3,4 @@
 target/
 # Игнорировать файлы IDE
 .idea/
-MainPage_Test.java
 logs
